@@ -39,7 +39,11 @@
               <span v-html="renderTitle(item.name, item.match)"></span>
             </template>
             <template #avatar>
-              <a-avatar style="border-radius: 0" :src="item.icon" />
+              <a-avatar 
+                style="border-radius: 0" 
+                :src="item.icon" 
+                @error="() => { /* console.error('[Icon Render Error]', item.name, item.icon); */ return true; }"
+              />
             </template>
           </a-list-item-meta>
         </a-list-item>

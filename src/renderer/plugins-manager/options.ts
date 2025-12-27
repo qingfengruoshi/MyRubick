@@ -33,7 +33,7 @@ const optionsManager = ({
   openPlugin,
   currentPlugin,
 }) => {
-  const optionsRef = ref([]);
+  const optionsRef: any = ref([]);
 
   // 全局快捷键
   ipcRenderer.on('global-short-key', (e, msg) => {
@@ -80,10 +80,10 @@ const optionsManager = ({
                   cmd,
                   ext: cmd.type
                     ? {
-                        code: fe.code,
-                        type: cmd.type || 'text',
-                        payload: searchValue.value,
-                      }
+                      code: fe.code,
+                      type: cmd.type || 'text',
+                      payload: searchValue.value,
+                    }
                     : null,
                   openPlugin,
                   option,

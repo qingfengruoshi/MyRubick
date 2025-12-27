@@ -23,7 +23,6 @@ module.exports = {
       mainProcessWatch: ['src/main'],
       externals: [
         'pouchdb',
-        'extract-file-icon',
         'npm',
         'electron-screenshots',
         '@electron/remote',
