@@ -39,7 +39,43 @@ module.exports = {
       builderOptions: {
         productName: 'rubick',
         appId: 'com.muwoo.rubick',
-        compression: 'maximum',
+        copyright: 'Copyright © 2021',
+
+        // ========== 打包优化配置 ==========
+        compression: 'normal',  // 启用压缩（可节省 5-10 MB）
+        asar: true,             // 启用 asar 打包
+        asarUnpack: ['**/*.node'],  // 不压缩原生模块
+
+        // 只保留中英文语言包（可节省 10-15 MB）
+        // electronLanguages: ['zh-CN', 'en-US'],
+
+        // 排除不需要的文件（可节省 2-5 MB）
+        // 注意：files 配置可能导致入口文件被排除，暂时禁用
+        // 使用默认配置，electron-builder 会自动处理
+        // files: [
+        //   "dist/**/*",
+        //   "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md,readme}",
+        //   "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+        //   "!**/node_modules/*.d.ts",
+        //   "!**/node_modules/.bin",
+        //   "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+        //   "!.editorconfig",
+        //   "!**/._*",
+        //   "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+        //   "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+        //   "!**/{appveyor.yml,.travis.yml,circle.yml}",
+        //   "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+        // ],
+        // ========== 优化配置结束 ==========
+        // 注意：electronLanguages 选项需要 electron-builder 25+ 才支持
+        // 当前版本 22.x 不支持此选项
+
+        extraResources: [
+          {
+            from: './src/main/browsers/',
+            to: './browsers/',
+          },
+        ],
         // afterPack: './release.js',
         // afterAllArtifactBuild: () => {
         //   return ['./build/app.asar.gz'];
