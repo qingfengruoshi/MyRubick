@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES2022",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -22,7 +22,7 @@
       ]
     },
     "lib": [
-      "esnext",
+      "ES2022",
       "dom",
       "dom.iterable",
       "scripthost"

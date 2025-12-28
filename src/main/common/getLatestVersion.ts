@@ -20,8 +20,13 @@ export const getLatestVersion = async (isCheckBetaUpdate = false) => {
         const normalList = list.filter((item) => !item.name.includes('beta'));
         return normalList[0].name;
       });
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    // 静默处理 GitHub API 速率限制错误
+    if (err.response?.status === 403) {
+      console.warn('GitHub API 速率限制，跳过版本检查');
+    } else {
+      console.log('版本检查失败:', err.message || err);
+    }
   }
   return res;
 };
