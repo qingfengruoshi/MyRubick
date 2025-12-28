@@ -27,4 +27,5 @@ interface Window {
   pluginLoaded: () => void;
   getMainInputInfo: () => any;
   searchFocus: (args: any, strict?: boolean) => any;
+  appList: any; // Debug: Application list for console debugging
 }

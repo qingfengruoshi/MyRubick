@@ -33,6 +33,11 @@ const createPluginManager = (): any => {
   const initPlugins = async () => {
     initPluginHistory();
     appList.value = await appSearch(nativeImage);
+
+    // 暴露到 window 对象供调试使用
+    window.appList = appList.value;
+    console.log('[Debug] appList exposed to window. Use window.appList to access.');
+
     initLocalStartPlugin();
   };
 

@@ -60,7 +60,7 @@ function fileDisplay(filePath) {
     if (err) {
       console.warn(err);
     } else {
-      // console.log('[Search Debug] Scanning dir:', filePath, 'Files:', files.length); // Optional verbose log
+      console.log(`[App Index] Scanning directory: ${filePath}, found ${files.length} items`);
       files.forEach(function (filename) {
         const filedir = path.join(filePath, filename);
         fs.stat(filedir, function (eror, stats) {
@@ -83,8 +83,9 @@ function fileDisplay(filePath) {
               if (ext === '.lnk' || ext === '.url') {
                 try {
                   appDetail = shell.readShortcutLink(filedir);
+                  console.log(`[App Index] ✓ Shortcut parsed: "${appName}" → ${appDetail.target}`);
                 } catch (e) {
-                  // console.warn('[Search Debug] readShortcutLink failed for:', filename, e);
+                  console.warn(`[App Index] ✗ readShortcutLink failed for: ${filename}`);
                   // Fallback: use PowerShell to resolve shortcut
                   try {
                     // Safe quoting for PowerShell, escaping single quotes
@@ -92,7 +93,7 @@ function fileDisplay(filePath) {
                     const psCmd = `powershell -NoProfile -Command "$sh=New-Object -ComObject WScript.Shell;$s=$sh.CreateShortcut('${safePath}');$s.TargetPath"`;
                     const target = execSync(psCmd, { encoding: 'utf8' }).trim();
                     if (target) {
-                      // console.log('[Search Debug] Fallback resolution success for:', filename, 'Target:', target);
+                      console.log(`[App Index] ✓ PowerShell fallback success: "${appName}" → ${target}`);
                       appDetail = {
                         target: target,
                         args: '',
@@ -102,12 +103,13 @@ function fileDisplay(filePath) {
                       };
                     }
                   } catch (fallbackErr) {
-                    // console.warn('[Search Debug] Fallback also failed for:', filename);
+                    console.warn(`[App Index] ✗ PowerShell fallback also failed for: ${filename}`);
                   }
                 }
               } else if (ext === '.exe') {
                 // For .exe files directly in the folder
                 appDetail = { target: filedir };
+                console.log(`[App Index] Direct .exe file: "${appName}" → ${filedir}`);
               }
 
               // Filter out common uninstaller executables
@@ -119,6 +121,7 @@ function fileDisplay(filePath) {
                 targetBase.startsWith('uninstall') ||
                 targetBase.startsWith('uninst')
               ) {
+                console.log(`[App Index] ✗ Filtered out: "${appName}" (uninstaller or invalid target)`);
                 return;
               }
 
@@ -157,7 +160,37 @@ function fileDisplay(filePath) {
                 name: appName,
                 names: JSON.parse(JSON.stringify(keyWords)),
               };
-              // console.log('[Search Debug] Adding app:', appName);
+
+              // 检查是否已存在相同的应用
+              const existingApp = fileLists.find(app =>
+                app.desc === appInfo.desc || app.name === appName
+              );
+
+              // ========================================
+              // 重复处理模式选择（二选一，取消对应的注释）
+              // ========================================
+
+              // === 模式1：跳过重复（推荐给用户，当前启用）===
+              if (existingApp) {
+                console.warn(`[App Index] ⚠️  Skipping duplicate: "${appName}"`);
+                console.warn(`   Current Source: ${filedir}`);
+                console.warn(`   Existing Source: ${existingApp.desc}`);
+                return; // 跳过重复的，不添加
+              }
+
+              // === 模式2：允许重复（用于调试，需要时取消注释）===
+              // if (existingApp) {
+              //   console.warn(`[App Index] ⚠️  DUPLICATE DETECTED!`);
+              //   console.warn(`   App Name: "${appName}"`);
+              //   console.warn(`   Current Source: ${filedir}`);
+              //   console.warn(`   Existing Source: ${existingApp.desc}`);
+              //   console.warn(`   Adding anyway (will appear in index)`);
+              // }
+
+              console.log(`[App Index] ✓ Adding app: "${appName}"`);
+              console.log(`   Target: ${appDetail.target}`);
+              console.log(`   Keywords: [${keyWords.join(', ')}]`);
+
               fileLists.push(appInfo);
               getico(appInfo);
             }
@@ -172,7 +205,49 @@ function fileDisplay(filePath) {
 }
 
 export default () => {
+  console.log('[App Index] ========================================');
+  console.log('[App Index] Starting Windows application indexing');
+  console.log('[App Index] ========================================');
+
   fileDisplay(filePath);
   fileDisplay(startMenu);
+
+  // 延迟输出统计，等待异步扫描完成
+  setTimeout(() => {
+    console.log('[App Index] ========================================');
+    console.log(`[App Index] Indexing complete! Total apps: ${fileLists.length}`);
+    console.log('[App Index] ========================================');
+
+    // 检查重复项
+    const nameCount = new Map();
+    const descCount = new Map();
+
+    fileLists.forEach(app => {
+      nameCount.set(app.name, (nameCount.get(app.name) || 0) + 1);
+      descCount.set(app.desc, (descCount.get(app.desc) || 0) + 1);
+    });
+
+    const duplicateNames = Array.from(nameCount.entries()).filter(([name, count]) => count > 1);
+    const duplicateDescs = Array.from(descCount.entries()).filter(([desc, count]) => count > 1);
+
+    if (duplicateNames.length > 0) {
+      console.warn('[App Index] ⚠️  Duplicate app names found:');
+      duplicateNames.forEach(([name, count]) => {
+        console.warn(`   "${name}" appears ${count} times`);
+        const apps = fileLists.filter(app => app.name === name);
+        apps.forEach((app, idx) => {
+          console.warn(`     [${idx + 1}] ${app.desc}`);
+        });
+      });
+    }
+
+    if (duplicateDescs.length > 0) {
+      console.warn('[App Index] ⚠️  Duplicate target paths found:');
+      duplicateDescs.forEach(([desc, count]) => {
+        console.warn(`   "${desc}" appears ${count} times`);
+      });
+    }
+  }, 3000); // 等待3秒让异步扫描完成
+
   return fileLists;
 };

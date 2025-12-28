@@ -63,7 +63,10 @@ class App {
   }
   onReady() {
     const readyFunction = async () => {
-      checkVersion();
+      // 禁用自动版本检查，避免 GitHub API 速率限制
+      // 用户可以通过菜单手动检查更新
+      // checkVersion();
+
       await localConfig.init();
       const config = await localConfig.getConfig();
       if (!config.perf.common.guide) {
