@@ -9,6 +9,11 @@ module.exports = {
         '@': path.join(__dirname, './src'),
       },
     },
+    externals: {
+      'dns': 'commonjs dns',
+      'http2': 'commonjs http2',
+      'original-fs': 'commonjs original-fs',
+    },
   },
   pages: {
     index: {
@@ -26,6 +31,9 @@ module.exports = {
         'npm',
         'electron-screenshots',
         '@electron/remote',
+        'dns',
+        'http2',
+        'original-fs',
       ],
       // Use this to change the entry point of your app's render process. default src/[main|index].[js|ts]
       builderOptions: {

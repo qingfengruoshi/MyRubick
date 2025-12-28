@@ -63,14 +63,14 @@ const registerHotKey = (mainWindow: BrowserWindow): void => {
     const currentShow = mainWindow.isVisible() && mainWindow.isFocused();
     if (currentShow) return mainWindow.hide();
     const { x: wx, y: wy } = winPosition.getPosition();
-    mainWindow.setAlwaysOnTop(false);
+    mainWindow.setAlwaysOnTop(true);
     mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+    mainWindow.setPosition(wx, wy);
+    mainWindow.show();
     mainWindow.focus();
     mainWindow.setVisibleOnAllWorkspaces(false, {
       visibleOnFullScreen: true,
     });
-    mainWindow.setPosition(wx, wy);
-    mainWindow.show();
   }
 
   const init = async () => {
@@ -84,7 +84,7 @@ const registerHotKey = (mainWindow: BrowserWindow): void => {
     // 处理显示/隐藏快捷键的注册
     const doublePressShortcuts = ['Ctrl+Ctrl', 'Option+Option', 'Shift+Shift', 'Command+Command'];
     const isDoublePressShortcut = doublePressShortcuts.includes(config.perf.shortCut.showAndHidden);
-    
+
     if (isDoublePressShortcut) {
       // 双击快捷键（如 Ctrl+Ctrl）详见 uIOhookRegister 函数实现
     } else {
