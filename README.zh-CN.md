@@ -34,6 +34,40 @@
 
 [Rubick Docs](https://rubickCenter.github.io/rubick/)
 
+## 📚 项目文档说明
+
+本项目包含详细的开发、调试和维护文档：
+
+### 🔧 开发与升级
+
+- **[UPGRADE_LOG.md](./UPGRADE_LOG.md)** - Electron 升级完整日志（v26 → v39），包含依赖变更、配置更新和常见问题
+- **[MODIFICATIONS_SUMMARY.md](./MODIFICATIONS_SUMMARY.md)** - v4.3.8 版本所有修改总结，包含文件变更清单和验证检查表
+
+### 🐛 调试指南
+
+- **[SEARCH_LOGIC.md](./SEARCH_LOGIC.md)** - 搜索逻辑完整说明（500+ 行），包含应用索引、图标提取和匹配算法
+- **[DUPLICATE_APP_DEBUG_REPORT.md](./DUPLICATE_APP_DEBUG_REPORT.md)** - 重复应用搜索问题调试报告，含根因分析和解决方案
+- **[DEBUG_DUPLICATE_APPS.md](./DEBUG_DUPLICATE_APPS.md)** - 使用控制台工具调试重复应用的分步指南
+- **[CONSOLE_DEBUG_QUICKSTART.md](./CONSOLE_DEBUG_QUICKSTART.md)** - 使用浏览器控制台调试应用列表的快速入门
+- **[DEBUG_GUIDE.md](./DEBUG_GUIDE.md)** - 收集错误日志的通用调试指南
+- **[SEARCHBOX_FIX.md](./SEARCHBOX_FIX.md)** - 搜索框显示问题诊断指南
+
+### 🔄 API 与更新
+
+- **[GITHUB_API_MODIFICATION.md](./GITHUB_API_MODIFICATION.md)** - GitHub API 版本检查修改说明，避免速率限制
+- **[GITHUB_API_FIX.md](./GITHUB_API_FIX.md)** - GitHub API 速率限制错误的详细修复文档
+
+### 📖 快速参考
+
+| 文档 | 用途 | 使用场景 |
+|------|------|---------|
+| SEARCH_LOGIC.md | 理解搜索机制 | 开发搜索功能时 |
+| UPGRADE_LOG.md | Electron 升级详情 | 更新依赖时 |
+| DEBUG_*.md | 调试特定问题 | 排查故障时 |
+| MODIFICATIONS_SUMMARY.md | 近期修改概览 | 发布新版本前 |
+
+所有文档位于项目根目录，便于快速访问。
+
 ## 如何使用 rubick
 
 安装完成 rubick 后，可以通过快捷键 Alt/Option+R  可以快速呼起主程序。主程序输入框内输入关键词可以搜索出对应的 App、插件、文件... 选择即可使用。如果没有想要的功能，可以点击左侧的 logo 进入插件市场寻找自己想要的插件进行安装。

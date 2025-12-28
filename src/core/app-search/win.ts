@@ -212,42 +212,43 @@ export default () => {
   fileDisplay(filePath);
   fileDisplay(startMenu);
 
-  // 延迟输出统计，等待异步扫描完成
-  setTimeout(() => {
-    console.log('[App Index] ========================================');
-    console.log(`[App Index] Indexing complete! Total apps: ${fileLists.length}`);
-    console.log('[App Index] ========================================');
-
-    // 检查重复项
-    const nameCount = new Map();
-    const descCount = new Map();
-
-    fileLists.forEach(app => {
-      nameCount.set(app.name, (nameCount.get(app.name) || 0) + 1);
-      descCount.set(app.desc, (descCount.get(app.desc) || 0) + 1);
-    });
-
-    const duplicateNames = Array.from(nameCount.entries()).filter(([name, count]) => count > 1);
-    const duplicateDescs = Array.from(descCount.entries()).filter(([desc, count]) => count > 1);
-
-    if (duplicateNames.length > 0) {
-      console.warn('[App Index] ⚠️  Duplicate app names found:');
-      duplicateNames.forEach(([name, count]) => {
-        console.warn(`   "${name}" appears ${count} times`);
-        const apps = fileLists.filter(app => app.name === name);
-        apps.forEach((app, idx) => {
-          console.warn(`     [${idx + 1}] ${app.desc}`);
-        });
-      });
-    }
-
-    if (duplicateDescs.length > 0) {
-      console.warn('[App Index] ⚠️  Duplicate target paths found:');
-      duplicateDescs.forEach(([desc, count]) => {
-        console.warn(`   "${desc}" appears ${count} times`);
-      });
-    }
-  }, 3000); // 等待3秒让异步扫描完成
+  // 生产环境：禁用索引统计（调试用，占用定时器资源）
+  // 如需调试，取消下面的注释
+  // setTimeout(() => {
+  //   console.log('[App Index] ========================================');
+  //   console.log(`[App Index] Indexing complete! Total apps: ${fileLists.length}`);
+  //   console.log('[App Index] ========================================');
+  //
+  //   // 检查重复项
+  //   const nameCount = new Map();
+  //   const descCount = new Map();
+  //
+  //   fileLists.forEach(app => {
+  //     nameCount.set(app.name, (nameCount.get(app.name) || 0) + 1);
+  //     descCount.set(app.desc, (descCount.get(app.desc) || 0) + 1);
+  //   });
+  //
+  //   const duplicateNames = Array.from(nameCount.entries()).filter(([name, count]) => count > 1);
+  //   const duplicateDescs = Array.from(descCount.entries()).filter(([desc, count]) => count > 1);
+  //
+  //   if (duplicateNames.length > 0) {
+  //     console.warn('[App Index] ⚠️  Duplicate app names found:');
+  //     duplicateNames.forEach(([name, count]) => {
+  //       console.warn(`   "${name}" appears ${count} times`);
+  //       const apps = fileLists.filter(app => app.name === name);
+  //       apps.forEach((app, idx) => {
+  //         console.warn(`     [${idx + 1}] ${app.desc}`);
+  //       });
+  //     });
+  //   }
+  //
+  //   if (duplicateDescs.length > 0) {
+  //     console.warn('[App Index] ⚠️  Duplicate target paths found:');
+  //     duplicateDescs.forEach(([desc, count]) => {
+  //       console.warn(`   "${desc}" appears ${count} times`);
+  //     });
+  //   }
+  // }, 3000);
 
   return fileLists;
 };

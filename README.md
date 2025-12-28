@@ -31,6 +31,40 @@ Download the latest release:
 
 [Rubick Docs](https://rubickCenter.github.io/docs/)
 
+## 📚 Project Documentation
+
+This project contains comprehensive documentation for development, debugging, and maintenance:
+
+### 🔧 Development & Upgrade
+
+- **[UPGRADE_LOG.md](./UPGRADE_LOG.md)** - Complete Electron upgrade log (v26 → v39), including dependency changes, configuration updates, and FAQ
+- **[MODIFICATIONS_SUMMARY.md](./MODIFICATIONS_SUMMARY.md)** - Summary of all modifications in version 4.3.8, including file changes and verification checklist
+
+### 🐛 Debugging Guides
+
+- **[SEARCH_LOGIC.md](./SEARCH_LOGIC.md)** - Comprehensive documentation of search logic (500+ lines), including app indexing, icon extraction, and matching algorithms
+- **[DUPLICATE_APP_DEBUG_REPORT.md](./DUPLICATE_APP_DEBUG_REPORT.md)** - Debug report for duplicate app search issue with root cause analysis and solutions
+- **[DEBUG_DUPLICATE_APPS.md](./DEBUG_DUPLICATE_APPS.md)** - Step-by-step guide for debugging duplicate apps using console tools
+- **[CONSOLE_DEBUG_QUICKSTART.md](./CONSOLE_DEBUG_QUICKSTART.md)** - Quick start guide for using browser console to debug app list
+- **[DEBUG_GUIDE.md](./DEBUG_GUIDE.md)** - General debugging guide for collecting error logs
+- **[SEARCHBOX_FIX.md](./SEARCHBOX_FIX.md)** - Diagnostic guide for search box display issues
+
+### 🔄 API & Updates
+
+- **[GITHUB_API_MODIFICATION.md](./GITHUB_API_MODIFICATION.md)** - Explanation of GitHub API version check modification to avoid rate limits
+- **[GITHUB_API_FIX.md](./GITHUB_API_FIX.md)** - Detailed fix documentation for GitHub API rate limit errors
+
+### 📖 Quick Reference
+
+| Document | Purpose | When to Use |
+|----------|---------|-------------|
+| SEARCH_LOGIC.md | Understanding search mechanism | Developing search features |
+| UPGRADE_LOG.md | Electron upgrade details | Updating dependencies |
+| DEBUG_*.md | Debugging specific issues | Troubleshooting problems |
+| MODIFICATIONS_SUMMARY.md | Overview of recent changes | Before releasing new version |
+
+All documentation is in the project root directory for easy access.
+
 ## How To Use Rubick
 After installing rubick, you can quickly launch the main program by pressing the shortcut keys Alt/Option+R. Entering keywords in the main program input box can search for corresponding apps, plugins, files...
 Select the ones you want and use them.
