@@ -1,7 +1,7 @@
 {
   "name": "rubick",
-  "version": "4.3.7",
-  "author": "muwoo <2424880409@qq.com>",
+  "version": "4.3.8",
+  "author": "muwoo <1726539309@qq.com>",
   "private": true,
   "description": "An open source heavy desktop efficiency tool.",
   "scripts": {
