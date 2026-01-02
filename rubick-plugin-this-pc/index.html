@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Opening This PC...</title>
+</head>
+
+<body>
+    <div style="padding: 20px; font-family: sans-serif;">
+        正在打开此电脑...
+    </div>
+    <script>
+        // Require child_process to execute system commands directly
+        // This relies on nodeIntegration: true in the plugin window
+        const { spawn } = require('child_process');
+
+        window.rubick.onPluginReady(() => {
+            try {
+                // Use explorer.exe directly with the CLSID for "This PC"
+                spawn('explorer.exe', ['::{20D04FE0-3AEA-1069-A2D8-08002B30309D}'], { detached: true });
+            } catch (e) {
+                console.error("Failed to spawn explorer:", e);
+                // Fallback to basic C: drive if advanced method fails
+                window.rubick.shellOpenPath('C:\\');
+            }
+
+            // Close the plugin immediately
+            setTimeout(() => {
+                window.rubick.outPlugin();
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

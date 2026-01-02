@@ -33,17 +33,24 @@ global.LOCAL_PLUGINS = {
   PLUGINS: [],
   async downloadPlugin(plugin) {
     await pluginInstance.install([plugin.name], { isDev: plugin.isDev });
-    if (plugin.isDev) {
-      // 获取 dev 插件信息
+
+    // Always try to read the latest package.json from the installed directory
+    // This ensures we get the latest logo/config even if the input plugin object is stale
+    try {
       const pluginPath = path.resolve(baseDir, 'node_modules', plugin.name);
-      const pluginInfo = JSON.parse(
-        fs.readFileSync(path.join(pluginPath, './package.json'), 'utf8')
-      );
-      plugin = {
-        ...plugin,
-        ...pluginInfo,
-      };
+      const pkgPath = path.join(pluginPath, './package.json');
+      if (fs.existsSync(pkgPath)) {
+        const pluginInfo = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+        plugin = {
+          ...plugin,
+          ...pluginInfo,
+        };
+      }
+    } catch (e) {
+      // ignore error, fall back to provided plugin info
+      console.error('Failed to read package.json:', e);
     }
+
     global.LOCAL_PLUGINS.addPlugin(plugin);
     return global.LOCAL_PLUGINS.PLUGINS;
   },
@@ -88,15 +95,18 @@ global.LOCAL_PLUGINS = {
   addPlugin(plugin) {
     let has = false;
     const currentPlugins = global.LOCAL_PLUGINS.getLocalPlugins();
-    currentPlugins.some((p) => {
+    currentPlugins.some((p, index) => {
       has = p.name === plugin.name;
+      if (has) {
+        currentPlugins[index] = plugin;
+      }
       return has;
     });
     if (!has) {
       currentPlugins.unshift(plugin);
-      global.LOCAL_PLUGINS.PLUGINS = currentPlugins;
-      fs.writeFileSync(configPath, JSON.stringify(currentPlugins));
     }
+    global.LOCAL_PLUGINS.PLUGINS = currentPlugins;
+    fs.writeFileSync(configPath, JSON.stringify(currentPlugins));
   },
   updatePlugin(plugin) {
     global.LOCAL_PLUGINS.PLUGINS = global.LOCAL_PLUGINS.PLUGINS.map(

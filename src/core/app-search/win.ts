@@ -250,5 +250,28 @@ export default () => {
   //   }
   // }, 3000);
 
+  // 手动添加“此电脑”
+  const thisPcName = '此电脑';
+  const thisPcIconPath = path.join(icondir, `${thisPcName}.png`);
+
+  const thisPcEntry = {
+    value: 'plugin',
+    desc: 'C:\\Windows\\explorer.exe', // 用于提取图标的源文件
+    type: 'app',
+    icon: thisPcIconPath,
+    pluginType: 'app',
+    action: 'explorer ::{20D04FE0-3AEA-1069-A2D8-08002B30309D}',
+    keyWords: ['This PC', '此电脑', 'My Computer'],
+    name: thisPcName,
+    names: ['This PC', '此电脑', 'My Computer'],
+  };
+
+  // 检查是否已存在（避免重复添加）
+  const hasThisPc = fileLists.some(item => item.name === thisPcName);
+  if (!hasThisPc) {
+    fileLists.push(thisPcEntry);
+    getico({ name: thisPcName, desc: 'C:\\Windows\\explorer.exe' });
+  }
+
   return fileLists;
 };

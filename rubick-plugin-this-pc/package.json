@@ -1,0 +1,21 @@
+{
+    "name": "rubick-plugin-this-pc-final",
+    "pluginName": "打开此电脑",
+    "description": "直接通过 Rubick 打开 Windows '此电脑'",
+    "author": "RubickUser",
+    "main": "index.html",
+    "logo": "file:///e:/Storage/Code_Storage/MyRubick/rubick-plugin-this-pc/logo.svg",
+    "version": "1.0.2",
+    "pluginType": "ui",
+    "features": [
+        {
+            "code": "open-this-pc",
+            "explain": "打开此电脑",
+            "cmds": [
+                "This PC",
+                "此电脑",
+                "My Computer"
+            ]
+        }
+    ]
+}
